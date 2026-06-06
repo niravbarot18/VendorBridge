@@ -28,10 +28,10 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  
+
   // Signup specific
   const [selectedVendorId, setSelectedVendorId] = useState('');
-  
+
   // Forgot password specific
   const [forgotEmail, setForgotEmail] = useState('');
 
@@ -150,7 +150,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
         display: 'flex',
         alignItems: 'center',
         gap: '0.5rem',
-        background: 'rgba(255,255,255,0.03)',
+        background: 'var(--bg-card)',
         border: '1px solid var(--border-color)',
         borderRadius: '12px',
         padding: '0.4rem 0.85rem',
@@ -159,17 +159,17 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
         <span style={{ fontSize: '0.75rem', fontWeight: 600, color: backendMode ? (backendConnected ? 'var(--success)' : 'var(--danger)') : 'var(--text-muted)' }}>
           {backendMode ? (backendConnected ? 'MySQL: Active' : 'MySQL: Offline') : 'Mock DB: Local'}
         </span>
-        <input 
-          type="checkbox" 
-          checked={backendMode} 
-          onChange={(e) => toggleBackendMode(e.target.checked)} 
+        <input
+          type="checkbox"
+          checked={backendMode}
+          onChange={(e) => toggleBackendMode(e.target.checked)}
           style={{ cursor: 'pointer', width: '14px', height: '14px' }}
           title="Toggle Live Express + MySQL Backend Sync"
         />
       </div>
 
       <div style={{ maxWidth: '440px', width: '100%', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-        
+
         {/* App Logo Header */}
         <div style={{ textAlign: 'center' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
@@ -193,7 +193,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
 
         {/* Card Body */}
         <div className="card" style={{ padding: '2.5rem 2rem' }}>
-          
+
           {/* Notification Messages */}
           {errorMsg && (
             <div style={{
@@ -202,7 +202,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
               gap: '0.5rem',
               padding: '0.75rem 1rem',
               backgroundColor: 'var(--danger-bg)',
-              border: '1px solid rgba(239, 68, 68, 0.2)',
+              border: '1px solid rgba(220, 38, 38, 0.15)',
               borderRadius: '8px',
               color: 'var(--danger)',
               fontSize: '0.825rem',
@@ -221,7 +221,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
               gap: '0.5rem',
               padding: '0.75rem 1rem',
               backgroundColor: 'var(--success-bg)',
-              border: '1px solid rgba(16, 185, 129, 0.2)',
+              border: '1px solid rgba(5, 150, 105, 0.15)',
               borderRadius: '8px',
               color: 'var(--success)',
               fontSize: '0.825rem',
@@ -279,7 +279,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
                     disabled={loading}
                     style={{ width: '100%', paddingRight: '2.5rem' }}
                   />
-                  <span 
+                  <span
                     onClick={() => setShowPassword(!showPassword)}
                     style={{ position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer', color: 'var(--text-muted)' }}
                   >
@@ -354,7 +354,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
                     disabled={loading}
                     style={{ width: '100%', paddingRight: '2.5rem' }}
                   />
-                  <span 
+                  <span
                     onClick={() => setShowPassword(!showPassword)}
                     style={{ position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer', color: 'var(--text-muted)' }}
                   >

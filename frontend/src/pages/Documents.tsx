@@ -438,9 +438,8 @@ export const Documents: React.FC = () => {
             </div>
           </div>
 
-          {/* Letterhead Document */}
-          <div className="card print-document" style={{ padding: '3rem', border: '1px solid var(--border-color)', backgroundColor: '#0f1524', position: 'relative' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '2px solid rgba(255,255,255,0.1)', paddingBottom: '1.5rem', marginBottom: '2rem' }}>
+          <div className="card print-document" style={{ padding: '3rem', border: '1px solid var(--border-color)', backgroundColor: '#ffffff', position: 'relative' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '2px solid var(--border-color)', paddingBottom: '1.5rem', marginBottom: '2rem' }}>
               <div>
                 <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.75rem', color: 'var(--primary)' }}>
                   {COMPANY_DETAILS.name}
@@ -519,8 +518,8 @@ export const Documents: React.FC = () => {
                 ))}
                 <tr>
                   <td colSpan={3} style={{ border: 'none' }}></td>
-                  <td style={{ textAlign: 'right', fontWeight: 600, borderTop: '2px solid rgba(255,255,255,0.1)' }}>Total Contract:</td>
-                  <td style={{ textAlign: 'right', fontWeight: 800, color: 'var(--primary)', borderTop: '2px solid rgba(255,255,255,0.1)' }}>
+                  <td style={{ textAlign: 'right', fontWeight: 600, borderTop: '2px solid var(--border-color)' }}>Total Contract:</td>
+                  <td style={{ textAlign: 'right', fontWeight: 800, color: 'var(--primary)', borderTop: '2px solid var(--border-color)' }}>
                     ₹{poView.po.amount.toLocaleString('en-IN')}
                   </td>
                 </tr>
@@ -528,7 +527,7 @@ export const Documents: React.FC = () => {
             </table>
 
             {/* Terms and Signatures */}
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '3rem', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '1.5rem', marginTop: '3rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '3rem', borderTop: '1px solid var(--border-color)', paddingTop: '1.5rem', marginTop: '3rem' }}>
               <div>
                 <h5 style={{ fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.5rem' }}>Standard Terms & Conditions:</h5>
                 <ul style={{ fontSize: '0.75rem', color: 'var(--text-muted)', paddingLeft: '1rem', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
@@ -538,10 +537,10 @@ export const Documents: React.FC = () => {
                 </ul>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', alignItems: 'center', justifyContent: 'flex-end', borderLeft: '1px solid rgba(255,255,255,0.05)', paddingLeft: '1rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', alignItems: 'center', justifyContent: 'flex-end', borderLeft: '1px solid var(--border-color)', paddingLeft: '1rem' }}>
                 <div style={{ textAlign: 'center', fontSize: '0.8rem' }}>
                   <div style={{ fontStyle: 'italic', fontWeight: 600, color: 'var(--text-main)' }}>Rajesh Patel</div>
-                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', borderTop: '1px dashed rgba(255,255,255,0.1)', marginTop: '0.25rem', paddingTop: '0.25rem', width: '120px' }}>
+                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', borderTop: '1px dashed var(--border-color)', marginTop: '0.25rem', paddingTop: '0.25rem', width: '120px' }}>
                     Authorized Manager
                   </div>
                 </div>
@@ -583,9 +582,9 @@ export const Documents: React.FC = () => {
           </div>
 
           {/* Printable Invoice Form */}
-          <div className="card print-document" style={{ padding: '3rem', border: '1px solid var(--border-color)', backgroundColor: '#0f1524' }}>
+          <div className="card print-document" style={{ padding: '3rem', border: '1px solid var(--border-color)', backgroundColor: '#ffffff' }}>
             
-            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '2px solid rgba(255,255,255,0.1)', paddingBottom: '1.5rem', marginBottom: '2rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '2px solid var(--border-color)', paddingBottom: '1.5rem', marginBottom: '2rem' }}>
               <div>
                 <span className="badge badge-success" style={{ marginBottom: '0.5rem' }}>Tax Invoice</span>
                 <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.75rem' }}>
@@ -657,7 +656,7 @@ export const Documents: React.FC = () => {
             </table>
 
             {/* Indian GST calculation breakdown panel */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '2rem', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '1.5rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '2rem', borderTop: '1px solid var(--border-color)', paddingTop: '1.5rem' }}>
               <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                 <div style={{ fontWeight: 600, color: 'var(--text-main)', marginBottom: '0.5rem' }}>Tax Summary Notes:</div>
                 {invoiceView.invoice.igst > 0 ? (
@@ -689,7 +688,7 @@ export const Documents: React.FC = () => {
                     </div>
                   </>
                 )}
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1rem', fontWeight: 800, color: 'var(--primary)', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '0.5rem', marginTop: '0.25rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1rem', fontWeight: 800, color: 'var(--primary)', borderTop: '1px solid var(--border-color)', paddingTop: '0.5rem', marginTop: '0.25rem' }}>
                   <span>Grand Total (INR):</span>
                   <span>₹{invoiceView.invoice.totalAmount.toLocaleString('en-IN')}</span>
                 </div>

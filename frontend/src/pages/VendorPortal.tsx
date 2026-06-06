@@ -283,7 +283,7 @@ export const VendorPortal: React.FC = () => {
                         gap: '1.5rem', 
                         alignItems: 'center', 
                         padding: '1rem', 
-                        backgroundColor: 'rgba(255,255,255,0.02)', 
+                        backgroundColor: 'var(--bg-main)', 
                         border: '1px solid var(--border-color)', 
                         borderRadius: '8px' 
                       }}

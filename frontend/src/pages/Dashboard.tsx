@@ -192,7 +192,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
                     <span style={{ fontWeight: 500 }}>{category}</span>
                     <span style={{ fontWeight: 600, color: 'var(--text-muted)' }}>₹{amt.toLocaleString('en-IN')}</span>
                   </div>
-                  <div style={{ height: '8px', width: '100%', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: '4px', overflow: 'hidden' }}>
+                  <div style={{ height: '8px', width: '100%', backgroundColor: '#e2e8f0', borderRadius: '4px', overflow: 'hidden' }}>
                     <div 
                       style={{ 
                         height: '100%', 

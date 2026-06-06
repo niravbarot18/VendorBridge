@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useAppState } from '../hooks/useAppState';
-import { FileSpreadsheet, Download, ShieldCheck, Activity, Award, Star } from 'lucide-react';
+import { FileSpreadsheet, Download, Activity, Award, Star } from 'lucide-react';
+import * as XLSX from 'xlsx';
+import { jsPDF } from 'jspdf';
 
 export const Reports: React.FC = () => {
-  const { activityLogs, vendors } = useAppState();
+  const { activityLogs, vendors, pos } = useAppState();
   const [logSearch, setLogSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState('');
 
@@ -22,19 +24,90 @@ export const Reports: React.FC = () => {
 
   const handleExportExcel = () => {
     setExportExcelSuccess(true);
-    setTimeout(() => {
+    try {
+      const dataToExport = pos.map(po => {
+        const vendorName = vendors.find(v => v.id === po.approvalId)?.companyName || 'N/A'; // Resolve vendor if possible
+        return {
+          'PO Number': po.poNumber,
+          'Contract Value (INR)': po.amount,
+          'Status': po.status,
+          'Issued Date': po.issuedAt ? new Date(po.issuedAt).toLocaleDateString() : 'N/A'
+        };
+      });
+
+      const ws = XLSX.utils.json_to_sheet(dataToExport);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Spend Summary');
+      XLSX.writeFile(wb, 'VendorBridge_Spend_Analytics_2026.xlsx');
+    } catch (e: any) {
+      alert(`Export failed: ${e.message}`);
+    } finally {
       setExportExcelSuccess(false);
-      // Simulate file download by creating a virtual link or showing an alert
-      alert('Success: "VendorBridge_Spend_Analytics_2026.xlsx" generated and saved to Downloads folder.');
-    }, 1200);
+    }
   };
 
   const handleExportPdf = () => {
     setExportPdfSuccess(true);
-    setTimeout(() => {
+    try {
+      const doc = new jsPDF();
+      doc.setFont('helvetica');
+
+      // Title & Header info
+      doc.setFontSize(18);
+      doc.setTextColor(15, 21, 36);
+      doc.text('VendorBridge ERP - Compliance Audit Report', 14, 20);
+      
+      doc.setFontSize(10);
+      doc.setTextColor(100, 116, 139);
+      doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 27);
+      doc.text(`Filter query: "${logSearch || 'All logs'}" | Role: "${roleFilter || 'All roles'}"`, 14, 32);
+
+      // Table Header Background
+      doc.setFillColor(15, 21, 36);
+      doc.rect(14, 38, 182, 8, 'F');
+      
+      // Header Text
+      doc.setFontSize(9);
+      doc.setTextColor(255, 255, 255);
+      doc.text('Timestamp', 16, 43);
+      doc.text('Actor', 65, 43);
+      doc.text('Action', 110, 43);
+      doc.text('Details', 145, 43);
+
+      doc.setTextColor(0, 0, 0);
+      let y = 52;
+      filteredLogs.forEach((log) => {
+        if (y > 275) {
+          doc.addPage();
+          doc.setFillColor(15, 21, 36);
+          doc.rect(14, 15, 182, 8, 'F');
+          doc.setTextColor(255, 255, 255);
+          doc.text('Timestamp', 16, 20);
+          doc.text('Actor', 65, 20);
+          doc.text('Action', 110, 20);
+          doc.text('Details', 145, 20);
+          doc.setTextColor(0, 0, 0);
+          y = 29;
+        }
+
+        const dateStr = new Date(log.timestamp).toLocaleDateString() + ' ' + new Date(log.timestamp).toLocaleTimeString();
+        doc.text(dateStr, 16, y);
+        doc.text(log.actorName.substring(0, 20), 65, y);
+        doc.text(log.action.substring(0, 15), 110, y);
+        
+        // Wrap/truncate long details to fit
+        const detailsText = log.details.length > 30 ? log.details.substring(0, 27) + '...' : log.details;
+        doc.text(detailsText, 145, y);
+        
+        y += 9;
+      });
+
+      doc.save('VendorBridge_Audit_Trail_Report.pdf');
+    } catch (e: any) {
+      alert(`Export failed: ${e.message}`);
+    } finally {
       setExportPdfSuccess(false);
-      alert('Success: "VendorBridge_Audit_Trail_Report.pdf" generated and saved to Downloads folder.');
-    }, 1200);
+    }
   };
 
   // Vendor Performance Table
@@ -90,7 +163,7 @@ export const Reports: React.FC = () => {
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             {activeVendors.slice(0, 3).map((v, i) => (
-              <div key={v.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.65rem 0.85rem', backgroundColor: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '8px' }}>
+              <div key={v.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.65rem 0.85rem', backgroundColor: 'var(--bg-main)', border: '1px solid var(--border-color)', borderRadius: '8px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <span style={{ fontWeight: 800, fontSize: '0.9rem', color: 'var(--text-muted)' }}>#{i + 1}</span>
                   <div>

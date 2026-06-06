@@ -235,8 +235,8 @@ export const Comparison: React.FC = () => {
 
           {/* AI Quotation Recommendation Panel */}
           {quotesWithScores.length > 0 && (
-            <div className="card" style={{ border: '1px solid #6366f1', background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(59, 130, 246, 0.02) 100%)', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--secondary)' }}>
+            <div className="card" style={{ border: '1px solid var(--primary)', background: 'linear-gradient(135deg, rgba(79, 70, 229, 0.04) 0%, rgba(59, 130, 246, 0.02) 100%)', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--primary)' }}>
                 <Sparkles size={18} />
                 <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '1.05rem', color: 'var(--text-main)' }}>
                   Smart AI Procurement Recommendation
@@ -318,7 +318,7 @@ export const Comparison: React.FC = () => {
                         const isLowestItemPrice = qItem && qItem.unitPrice === Math.min(...allItemPricesForThisItem);
 
                         return (
-                          <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.4rem 0.6rem', backgroundColor: 'rgba(255,255,255,0.01)', border: '1px solid var(--border-color)', borderRadius: '6px', fontSize: '0.8rem' }}>
+                          <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.4rem 0.6rem', backgroundColor: 'var(--bg-main)', border: '1px solid var(--border-color)', borderRadius: '6px', fontSize: '0.8rem' }}>
                             <span>{item.description}</span>
                             <span style={{ 
                               color: isLowestItemPrice ? 'var(--success)' : 'var(--text-main)', 
@@ -337,7 +337,7 @@ export const Comparison: React.FC = () => {
 
                   {/* Terms / Notes */}
                   {quote.notes && (
-                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontStyle: 'italic', backgroundColor: 'rgba(255,255,255,0.02)', padding: '0.75rem', borderRadius: '8px', border: '1px dashed var(--border-color)' }}>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontStyle: 'italic', backgroundColor: 'var(--bg-main)', padding: '0.75rem', borderRadius: '8px', border: '1px dashed var(--border-color)' }}>
                       Note: "{quote.notes}"
                     </div>
                   )}

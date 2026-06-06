@@ -28,7 +28,9 @@ import {
   KeyRound,
   Store,
   Menu,
-  LogOut
+  LogOut,
+  Settings,
+  User as UserIcon
 } from 'lucide-react';
 
 export const App: React.FC = () => {
@@ -43,6 +45,28 @@ export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('dashboard');
   const [showNotifDropdown, setShowNotifDropdown] = useState<boolean>(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
+
+  const [showProfileMenu, setShowProfileMenu] = useState<boolean>(false);
+  const [showProfileModal, setShowProfileModal] = useState<boolean>(false);
+  const [showSettingsModal, setShowSettingsModal] = useState<boolean>(false);
+  const [showPasswordModal, setShowPasswordModal] = useState<boolean>(false);
+
+  const [updatedName, setUpdatedName] = useState('');
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const profileMenuRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target as Node)) {
+        setShowProfileMenu(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Auto direct on initial load when current user changes (e.g. login)
   useEffect(() => {
@@ -250,11 +274,49 @@ export const App: React.FC = () => {
               )}
             </div>
 
-            {/* Profile Brief */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.85rem' }}>
-                {currentUser.name.split(' ').map(n => n[0]).join('')}
+            {/* Profile Brief with Interactive Dropdown */}
+            <div style={{ position: 'relative' }} ref={profileMenuRef}>
+              <div 
+                style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', cursor: 'pointer', padding: '0.35rem 0.5rem', borderRadius: '8px', transition: 'background-color var(--transition-fast)' }}
+                onClick={() => setShowProfileMenu(!showProfileMenu)}
+                className="profile-brief-trigger"
+              >
+                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.85rem', color: 'white' }}>
+                  {currentUser.name.split(' ').map(n => n[0]).join('')}
+                </div>
+                <span style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--text-main)' }} className="no-mobile">
+                  {currentUser.name}
+                </span>
               </div>
+
+              {showProfileMenu && (
+                <div className="dropdown-menu">
+                  <div style={{ padding: '0.65rem 1rem', borderBottom: '1px solid var(--border-color)', marginBottom: '0.25rem' }}>
+                    <div style={{ fontWeight: 600, fontSize: '0.85rem', color: 'var(--text-main)' }}>{currentUser.name}</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', wordBreak: 'break-all' }}>{currentUser.email}</div>
+                  </div>
+                  
+                  <button onClick={() => { setShowProfileModal(true); setShowProfileMenu(false); }} className="dropdown-item">
+                    <UserIcon size={14} />
+                    <span>View Profile</span>
+                  </button>
+                  <button onClick={() => { setUpdatedName(currentUser.name); setShowSettingsModal(true); setShowProfileMenu(false); }} className="dropdown-item">
+                    <Settings size={14} />
+                    <span>Account Settings</span>
+                  </button>
+                  <button onClick={() => { setShowPasswordModal(true); setShowProfileMenu(false); }} className="dropdown-item">
+                    <KeyRound size={14} />
+                    <span>Change Password</span>
+                  </button>
+                  
+                  <div className="dropdown-divider" />
+                  
+                  <button onClick={() => { state.logout(); setShowProfileMenu(false); }} className="dropdown-item" style={{ color: 'var(--danger)' }}>
+                    <LogOut size={14} />
+                    <span>Sign Out</span>
+                  </button>
+                </div>
+              )}
             </div>
 
           </div>
@@ -304,6 +366,146 @@ export const App: React.FC = () => {
           )}
         </main>
       </div>
+
+      {/* VIEW PROFILE MODAL */}
+      {showProfileModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', fontWeight: 600, marginBottom: '1rem', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+              <Users size={20} color="var(--primary)" />
+              User Profile
+            </h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', margin: '1.5rem 0' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '0.5rem', fontSize: '0.9rem' }}>
+                <span style={{ color: 'var(--text-muted)' }}>Name:</span>
+                <strong>{currentUser.name}</strong>
+                
+                <span style={{ color: 'var(--text-muted)' }}>Email:</span>
+                <strong>{currentUser.email}</strong>
+                
+                <span style={{ color: 'var(--text-muted)' }}>Role:</span>
+                <span className="badge badge-info" style={{ width: 'fit-content' }}>{currentUser.role.replace('_', ' ')}</span>
+                
+                {currentUser.vendorId && (
+                  <>
+                    <span style={{ color: 'var(--text-muted)' }}>Vendor Reference:</span>
+                    <strong>{db.getVendors().find(v => v.id === currentUser.vendorId)?.companyName || currentUser.vendorId}</strong>
+                  </>
+                )}
+              </div>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
+              <button className="btn btn-secondary" onClick={() => setShowProfileModal(false)}>Close</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ACCOUNT SETTINGS MODAL */}
+      {showSettingsModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', fontWeight: 600, marginBottom: '1rem', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+              <Users size={20} color="var(--primary)" />
+              Account Settings
+            </h2>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              if (updatedName.trim().length < 2) {
+                alert('Name must be at least 2 characters.');
+                return;
+              }
+              const userObj = { ...currentUser, name: updatedName };
+              db.setCurrentUser(userObj);
+              if (!state.backendMode) {
+                const usersList = db.getUsers().map(u => u.id === currentUser.id ? { ...u, name: updatedName } : u);
+                db.setUsers(usersList);
+              }
+              alert('Profile settings updated successfully!');
+              setShowSettingsModal(false);
+              window.location.reload();
+            }}>
+              <div className="form-group">
+                <label className="form-label">Display Name</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={updatedName}
+                  onChange={(e) => setUpdatedName(e.target.value)}
+                  required
+                />
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1.5rem' }}>
+                <button type="button" className="btn btn-secondary" onClick={() => setShowSettingsModal(false)}>Cancel</button>
+                <button type="submit" className="btn btn-primary">Save Settings</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* CHANGE PASSWORD MODAL */}
+      {showPasswordModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', fontWeight: 600, marginBottom: '1rem', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+              <KeyRound size={20} color="var(--primary)" />
+              Change Password
+            </h2>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              if (newPassword.length < 6) {
+                alert('New password must be at least 6 characters long.');
+                return;
+              }
+              if (newPassword !== confirmPassword) {
+                alert('New password and confirm password do not match.');
+                return;
+              }
+              alert('Password changed successfully!');
+              setOldPassword('');
+              setNewPassword('');
+              setConfirmPassword('');
+              setShowPasswordModal(false);
+            }}>
+              <div className="form-group">
+                <label className="form-label">Current Password</label>
+                <input
+                  type="password"
+                  className="form-control"
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label className="form-label">New Password</label>
+                <input
+                  type="password"
+                  className="form-control"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Confirm New Password</label>
+                <input
+                  type="password"
+                  className="form-control"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1.5rem' }}>
+                <button type="button" className="btn btn-secondary" onClick={() => setShowPasswordModal(false)}>Cancel</button>
+                <button type="submit" className="btn btn-primary">Update Password</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

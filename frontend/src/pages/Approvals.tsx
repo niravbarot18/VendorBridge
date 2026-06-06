@@ -238,7 +238,7 @@ export const Approvals: React.FC = () => {
                   {details?.rfqItems.map(item => {
                     const qItem = details.quoteItems.find(qi => qi.rfqItemId === item.id);
                     return (
-                      <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.75rem 1rem', backgroundColor: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '8px', fontSize: '0.9rem' }}>
+                      <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.75rem 1rem', backgroundColor: 'var(--bg-main)', border: '1px solid var(--border-color)', borderRadius: '8px', fontSize: '0.9rem' }}>
                         <div>
                           <strong>{item.description}</strong>
                           <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Qty: {item.quantity} {item.unit}</div>

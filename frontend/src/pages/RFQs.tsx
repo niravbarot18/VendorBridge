@@ -230,7 +230,7 @@ export const RFQs: React.FC<RFQsProps> = ({ onNavigate }) => {
                     <h4 style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-main)', marginBottom: '0.5rem' }}>Specification Items</h4>
                     <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
                       {rfqItemDetails.map(item => (
-                        <li key={item.id} style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'flex', justifyContent: 'space-between', padding: '0.35rem 0.5rem', backgroundColor: 'rgba(255,255,255,0.02)', borderRadius: '4px' }}>
+                        <li key={item.id} style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'flex', justifyContent: 'space-between', padding: '0.35rem 0.5rem', backgroundColor: 'var(--bg-main)', borderRadius: '4px' }}>
                           <span>{item.description}</span>
                           <strong style={{ color: 'var(--text-main)' }}>{item.quantity} {item.unit}</strong>
                         </li>
@@ -244,7 +244,7 @@ export const RFQs: React.FC<RFQsProps> = ({ onNavigate }) => {
                       {rfqVendorLinks.map(rv => {
                         const v = vendors.find(vObj => vObj.id === rv.vendorId);
                         return v ? (
-                          <span key={rv.id} className="badge badge-secondary" style={{ fontSize: '0.7rem', backgroundColor: 'rgba(255,255,255,0.05)', color: 'var(--text-main)' }}>
+                          <span key={rv.id} className="badge badge-secondary" style={{ fontSize: '0.7rem' }}>
                             {v.companyName}
                           </span>
                         ) : null;
@@ -375,7 +375,7 @@ export const RFQs: React.FC<RFQsProps> = ({ onNavigate }) => {
               {/* Vendor Assignment */}
               <div className="form-group" style={{ marginTop: '0.5rem' }}>
                 <label className="form-label" style={{ fontWeight: 600 }}>Assign Suppliers to Invite * (Select all that apply)</label>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', maxHeight: '150px', overflowY: 'auto', padding: '0.5rem', backgroundColor: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '8px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', maxHeight: '150px', overflowY: 'auto', padding: '0.5rem', backgroundColor: 'var(--bg-main)', border: '1px solid var(--border-color)', borderRadius: '8px' }}>
                   {activeVendors.map(vendor => (
                     <label key={vendor.id} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', cursor: 'pointer' }}>
                       <input 
